@@ -59,7 +59,6 @@ var requestHandler = function(request, response) {
   };
 
   var handleGET = function(err, rawText){
-    console.log('going into handleGET: ', rawText);
     var serverResponse;
     if(err) {
       console.log(err);
@@ -102,16 +101,24 @@ var requestHandler = function(request, response) {
       });
     }
     if (request.method === 'GET') {
-      console.log('going into GET if statement. ->',handleGET);
+      console.log('get header: ', request.headers)
       fs.readFile("./classes/messages/messages.txt", "utf8", handleGET);
 
     }
     if (request.method === 'OPTIONS'){
-      console.log('we got options');
+      // console.log('Request:', request);
+      // console.log('Header:',request.headers);
+      // console.log('request["anb-api-key"]:',request['anb-api-key']);
+
       statusCode = 200;
       headers['Content-Type'] = "plain/text";
       response.writeHead(statusCode, headers);
       response.end("go");
+
+      // statusCode = 200;
+      // headers['Content-Type'] = "plain/text";
+      // response.writeHead(statusCode, headers);
+      // response.end("go");
     }
   } else {
     statusCode = 404;
@@ -147,7 +154,7 @@ var requestHandler = function(request, response) {
 var defaultCorsHeaders = {
   "access-control-allow-origin": "*",
   "access-control-allow-methods": "GET, POST, PUT, DELETE, OPTIONS",
-  "access-control-allow-headers": "content-type, accept",
+  "access-control-allow-headers": "content-type, accept, AnB-API-Key",
   "access-control-max-age": 10 // Seconds.
 };
 
