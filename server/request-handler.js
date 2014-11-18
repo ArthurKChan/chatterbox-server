@@ -11,6 +11,7 @@ this file and include it in basic-server.js so that it actually works.
 *Hint* Check out the node module documentation at http://nodejs.org/api/modules.html.
 
 **************************************************************/
+var _ = require('underscore');
 var messages = [{username: 'arthur', text: 'hi'}, {username: 'bernie', text: 'hi'}];
 
 var requestHandler = function(request, response) {
@@ -53,12 +54,14 @@ var requestHandler = function(request, response) {
       request.on('end', function () {
         var post = JSON.parse(body);
         // console.log(post);
+        // grab a new date and extend to post
+        var date = new Date();
+        _.extend(post, { createdAt: date });
+        // increment ObjectId and extend to post
         messages.push(post);
       });
       statusCode = 201;
     }
-    // }else if(request.method === 'GET'){
-    // }
   } else {
     statusCode = 404;
   }
@@ -74,7 +77,11 @@ var requestHandler = function(request, response) {
   //
   // Calling .end "flushes" the response's internal buffer, forcing
   // node to actually send all the data over to the client.
-  response.end(JSON.stringify(data));
+  if( request.method === 'GET' && statusCode !== 404){
+    response.end(JSON.stringify(data));
+  } else {
+    response.end();
+  }
 };
 
 // These headers will allow Cross-Origin Resource Sharing (CORS).

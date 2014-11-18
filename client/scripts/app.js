@@ -151,7 +151,11 @@ $(function() {
         // Add in the message data using DOM methods to avoid XSS
         // Store the username in the element's data
         var $username = $('<span class="username"/>');
-        $username.text(data.username+': ').attr('data-username', data.username).attr('data-roomname',data.roomname).appendTo($chat);
+        $username.text(data.username+': ')
+          .attr('data-username', data.username)
+          .attr('data-roomname', data.roomname)
+          .attr('data-createdAt', data.createdAt)
+          .appendTo($chat);
 
         // Add the friend class
         if (app.friends[data.username] === true)
