@@ -42,7 +42,6 @@ var requestHandler = function(request, response) {
   // other than plain text, like JSON or HTML.
   headers['Content-Type'] = "application/json";
 
-  var data = {results:messages};
   var goodURLs = ['/classes/messages','/classes/room','/classes/room1'];
   // if (request.url === '/classes/messages') {
   if (goodURLs.indexOf(request.url) !== -1) {
@@ -77,10 +76,13 @@ var requestHandler = function(request, response) {
   //
   // Calling .end "flushes" the response's internal buffer, forcing
   // node to actually send all the data over to the client.
+
+  var data = { results: messages.slice(-100).reverse() };
+
   if( request.method === 'GET' && statusCode !== 404){
     response.end(JSON.stringify(data));
   } else {
-    response.end();
+    response.end(JSON.stringify({yourFace: 'success'}));
   }
 };
 
