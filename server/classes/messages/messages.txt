@@ -1,1 +1,5 @@
-{"username":"Arthur","text":"hi","createdAt":"2014-11-18T18:20:38.520Z"}
+{"username":"facehead","text":"foo","roomname":"lobby","createdAt":"2014-11-18T18:37:07.218Z"}
+{"username":"facehead","text":"omg","roomname":"lobby","createdAt":"2014-11-18T18:37:15.101Z"}
+{"username":"facehead","text":"wtf","roomname":"lobby","createdAt":"2014-11-18T18:37:28.220Z"}
+{"username":"facehead","text":"bbq","roomname":"lobby","createdAt":"2014-11-18T18:37:29.145Z"}
+{"username":"facehead","text":"the latest thing!","roomname":"lobby","createdAt":"2014-11-18T18:40:00.409Z"}

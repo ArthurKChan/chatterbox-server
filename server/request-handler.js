@@ -43,11 +43,6 @@ var requestHandler = function(request, response) {
   // other than plain text, like JSON or HTML.
 
 
-
-
-
-
-
   var handlePOST = function(err){
     var serverResponse;
     if(err) {
@@ -80,18 +75,13 @@ var requestHandler = function(request, response) {
       messages = _.map(splitStream, function(msg){
         return JSON.parse(msg);
       });
-      var data = {results: messages};
+      var data = {results: messages.reverse()};
       serverResponse = JSON.stringify(data);
     }
     response.writeHead(statusCode, headers);
     response.end(serverResponse);
 
   };
-
-
-
-
-
 
 
   var goodURLs = ['/classes/messages','/classes/room','/classes/room1'];
@@ -110,9 +100,6 @@ var requestHandler = function(request, response) {
         // messages.push(post);
         fs.appendFile("./classes/messages/messages.txt", JSON.stringify(post) + '\n', handlePOST);
       });
-      // statusCode = 201;
-      // headers['Content-Type'] = "plain/text";
-
     }
     if (request.method === 'GET') {
       console.log('going into GET if statement. ->',handleGET);
@@ -143,53 +130,6 @@ var requestHandler = function(request, response) {
   //
   // Calling .end "flushes" the response's internal buffer, forcing
   // node to actually send all the data over to the client.
-
-  // var data = { results: messages.slice(-100).reverse() };
-  // if( request.method === 'GET' && statusCode !== 404){
-  //   response.end(JSON.stringify(data));
-  // } else {
-  //   response.end('success url:'+request.url);
-  // }
-
-  // var handlePOST = function(err){
-  //   var serverResponse;
-  //   if(err) {
-  //     console.log(err);
-  //     statusCode = 400;
-  //     serverResponse = 'some error!';
-  //   } else {
-  //     statusCode = 201;
-  //     serverResponse = 'message recorded';
-  //   }
-  //   headers['Content-Type'] = "plain/text";
-  //   response.writeHead(statusCode, headers);
-  //   response.end(serverResponse);
-  // };
-
-  // var handleGET = function(err, rawText){
-  //   console.log('going into handleGET: ', rawText);
-  //   var serverResponse;
-  //   if(err) {
-  //     console.log(err);
-  //     statusCode = 500;
-  //     headers['Content-Type'] = "plain/text";
-  //     serverResponse = 'our bad!';
-  //   } else {
-  //     statusCode = 200;
-  //     headers['Content-Type'] = "application/json";
-
-  //     var splitStream = rawText.split('\n');
-  //     splitStream.pop();
-  //     messages = _.map(splitStream, function(msg){
-  //       return JSON.parse(msg);
-  //     });
-  //     var data = {results: messages};
-  //     serverResponse = JSON.stringify(data);
-  //   }
-  //   response.writeHead(statusCode, headers);
-  //   response.end(serverResponse);
-
-  // };
 
 };
 
