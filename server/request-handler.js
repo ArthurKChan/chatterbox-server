@@ -60,6 +60,8 @@ var requestHandler = function(request, response) {
         messages.push(post);
       });
       statusCode = 201;
+      headers['Content-Type'] = "plain/text";
+
     }
   } else {
     statusCode = 404;
@@ -82,7 +84,8 @@ var requestHandler = function(request, response) {
   if( request.method === 'GET' && statusCode !== 404){
     response.end(JSON.stringify(data));
   } else {
-    response.end(JSON.stringify({yourFace: 'success'}));
+    response.end('success url:'+request.url);
+    // response.end(JSON.stringify({yourFace: 'success'}));
   }
 };
 

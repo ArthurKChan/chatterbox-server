@@ -13,6 +13,8 @@
     "chai": "^1.9.0"
   },
   "dependencies": {
-    "underscore": "~1.7.0"
+    "underscore": "~1.7.0",
+    "connect": "~3.3.3",
+    "serve-static": "~1.7.1"
   }
 }
