@@ -12,6 +12,7 @@ this file and include it in basic-server.js so that it actually works.
 
 **************************************************************/
 var _ = require('underscore');
+var fs = require('fs');
 // var messages = [{username: 'arthur', text: 'hi'}, {username: 'bernie', text: 'hi'}];
 
 var requestHandler = function(request, response) {
@@ -42,55 +43,10 @@ var requestHandler = function(request, response) {
   // other than plain text, like JSON or HTML.
 
 
-  var goodURLs = ['/classes/messages','/classes/room','/classes/room1'];
 
-  if (goodURLs.indexOf(request.url) !== -1) {
 
-    if (request.method == 'POST') {
-      var body = '';
-      request.on('data', function (data) {
-        body += data;
-      });
-      request.on('end', function () {
-        var post = JSON.parse(body);
-        var date = new Date();
-        _.extend(post, { createdAt: date });
-        // messages.push(post);
-        fs.appendFile("./classes/messages/messages.txt", JSON.stringify(post) + '\n', handlePOST);
-      });
-      // statusCode = 201;
-      // headers['Content-Type'] = "plain/text";
 
-    }
-    if (request.method === 'GET') {
-      console.log('going into GET if statement.');
-      fs.readFile("./classes/messages/messages.txt", "utf8", handleGET);
 
-    }
-  } else {
-    statusCode = 404;
-    headers['Content-Type'] = "plain/text";
-    response.writeHead(statusCode, headers);
-    response.end('Resource not found!');
-  }
-
-  // .writeHead() writes to the request line and headers of the response,
-  // which includes the status and all headers.
-
-  // Make sure to always call response.end() - Node may not send
-  // anything back to the client until you do. The string you pass to
-  // response.end() will be the body of the response - i.e. what shows
-  // up in the browser.
-  //
-  // Calling .end "flushes" the response's internal buffer, forcing
-  // node to actually send all the data over to the client.
-
-  // var data = { results: messages.slice(-100).reverse() };
-  // if( request.method === 'GET' && statusCode !== 404){
-  //   response.end(JSON.stringify(data));
-  // } else {
-  //   response.end('success url:'+request.url);
-  // }
 
   var handlePOST = function(err){
     var serverResponse;
@@ -132,7 +88,112 @@ var requestHandler = function(request, response) {
 
   };
 
+
+
+
+
+
+
+  var goodURLs = ['/classes/messages','/classes/room','/classes/room1'];
+
+  if (goodURLs.indexOf(request.url) !== -1) {
+
+    if (request.method === 'POST') {
+      var body = '';
+      request.on('data', function (data) {
+        body += data;
+      });
+      request.on('end', function () {
+        var post = JSON.parse(body);
+        var date = new Date();
+        _.extend(post, { createdAt: date });
+        // messages.push(post);
+        fs.appendFile("./classes/messages/messages.txt", JSON.stringify(post) + '\n', handlePOST);
+      });
+      // statusCode = 201;
+      // headers['Content-Type'] = "plain/text";
+
+    }
+    if (request.method === 'GET') {
+      console.log('going into GET if statement. ->',handleGET);
+      fs.readFile("./classes/messages/messages.txt", "utf8", handleGET);
+
+    }
+    if (request.method === 'OPTIONS'){
+      console.log('we got options');
+      statusCode = 200;
+      headers['Content-Type'] = "plain/text";
+      response.writeHead(statusCode, headers);
+      response.end("go");
+    }
+  } else {
+    statusCode = 404;
+    headers['Content-Type'] = "plain/text";
+    response.writeHead(statusCode, headers);
+    response.end('Resource not found!');
+  }
+
+  // .writeHead() writes to the request line and headers of the response,
+  // which includes the status and all headers.
+
+  // Make sure to always call response.end() - Node may not send
+  // anything back to the client until you do. The string you pass to
+  // response.end() will be the body of the response - i.e. what shows
+  // up in the browser.
+  //
+  // Calling .end "flushes" the response's internal buffer, forcing
+  // node to actually send all the data over to the client.
+
+  // var data = { results: messages.slice(-100).reverse() };
+  // if( request.method === 'GET' && statusCode !== 404){
+  //   response.end(JSON.stringify(data));
+  // } else {
+  //   response.end('success url:'+request.url);
+  // }
+
+  // var handlePOST = function(err){
+  //   var serverResponse;
+  //   if(err) {
+  //     console.log(err);
+  //     statusCode = 400;
+  //     serverResponse = 'some error!';
+  //   } else {
+  //     statusCode = 201;
+  //     serverResponse = 'message recorded';
+  //   }
+  //   headers['Content-Type'] = "plain/text";
+  //   response.writeHead(statusCode, headers);
+  //   response.end(serverResponse);
+  // };
+
+  // var handleGET = function(err, rawText){
+  //   console.log('going into handleGET: ', rawText);
+  //   var serverResponse;
+  //   if(err) {
+  //     console.log(err);
+  //     statusCode = 500;
+  //     headers['Content-Type'] = "plain/text";
+  //     serverResponse = 'our bad!';
+  //   } else {
+  //     statusCode = 200;
+  //     headers['Content-Type'] = "application/json";
+
+  //     var splitStream = rawText.split('\n');
+  //     splitStream.pop();
+  //     messages = _.map(splitStream, function(msg){
+  //       return JSON.parse(msg);
+  //     });
+  //     var data = {results: messages};
+  //     serverResponse = JSON.stringify(data);
+  //   }
+  //   response.writeHead(statusCode, headers);
+  //   response.end(serverResponse);
+
+  // };
+
 };
+
+
 
 // These headers will allow Cross-Origin Resource Sharing (CORS).
 // This code allows this server to talk to websites that
