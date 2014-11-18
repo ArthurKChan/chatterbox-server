@@ -42,13 +42,25 @@ var requestHandler = function(request, response) {
   headers['Content-Type'] = "application/json";
 
   var data = {results:messages};
-  if (request.url === '/classes/messages') {
-    // fetch some messages
-
-    // put them in data
+  var goodURLs = ['/classes/messages','/classes/room','/classes/room1'];
+  // if (request.url === '/classes/messages') {
+  if (goodURLs.indexOf(request.url) !== -1) {
+    if (request.method == 'POST') {
+      var body = '';
+      request.on('data', function (data) {
+        body += data;
+      });
+      request.on('end', function () {
+        var post = JSON.parse(body);
+        console.log(post);
+        messages.push(post);
+      });
+      statusCode = 201;
+    }
+    // }else if(request.method === 'GET'){
+    // }
   } else {
     statusCode = 404;
-
   }
 
   // .writeHead() writes to the request line and headers of the response,
