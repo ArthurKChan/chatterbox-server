@@ -8,7 +8,7 @@ var handleRequest = request_handler.requestHandler;
 // normally already claimed by another server and/or not accessible
 // so we'll use a standard testing port like 3000, other common development
 // ports are 8080 and 1337.
-var port = 3000;
+var port = 8080;
 
 // For now, since you're running this server on your local machine,
 // we'll have it listen on the IP address 127.0.0.1, which is a
@@ -17,7 +17,7 @@ var ip = "127.0.0.1";
 
 var connect = require('connect');
 var serveStatic = require('serve-static');
-connect().use(serveStatic('../client',{index: './index.html'})).listen(8080);
+connect().use(serveStatic('../client',{index: './index.html'})).listen(3000);
 
 // We use node's http module to create a server.
 //
