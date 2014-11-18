@@ -42,6 +42,11 @@ var requestHandler = function(request, response) {
   // other than plain text, like JSON or HTML.
   headers['Content-Type'] = "application/json";
 
+  // Reading a file:
+  // var str;
+  // fs.readFile("./test.txt",'utf8',function(err,data){str = data;})
+  // Writing a file:
+
   var goodURLs = ['/classes/messages','/classes/room','/classes/room1'];
   // if (request.url === '/classes/messages') {
   if (goodURLs.indexOf(request.url) !== -1) {
@@ -57,11 +62,21 @@ var requestHandler = function(request, response) {
         var date = new Date();
         _.extend(post, { createdAt: date });
         // increment ObjectId and extend to post
-        messages.push(post);
+        // messages.push(post);
+        fs.appendFile("./classes/messages/messages.txt", JSON.stringify(post) + '\n', function(err){ if(err){console.log(err);}});
       });
       statusCode = 201;
       headers['Content-Type'] = "plain/text";
 
+    }
+    if (request.method === 'GET') {
+      // var fileStream;
+      // fs.readFile("./classes/messages/messages.txt", "utf8", function(err, data){fileStream=data;});
+      // var splitStream = fileStream.split('\n');
+      // splitStream.pop();
+      // messages = _.map(splitStream, function(msg){
+      //   return JSON.parse(msg);
+      // });
     }
   } else {
     statusCode = 404;
@@ -80,7 +95,7 @@ var requestHandler = function(request, response) {
   // node to actually send all the data over to the client.
 
   var data = { results: messages.slice(-100).reverse() };
-
+  // fs.close(the file)
   if( request.method === 'GET' && statusCode !== 404){
     response.end(JSON.stringify(data));
   } else {
